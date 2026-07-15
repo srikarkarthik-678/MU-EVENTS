@@ -3,15 +3,23 @@ import { assets } from '@/public/assets'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useParams } from "next/navigation";
 import axios from 'axios'
 
-const Page = ({ params }) => {
+const Page = () => {
+  const params = useParams();
   const [data, setdata] = useState(null)
 
   const fetchblogdata = async () => {
-    const response = await axios.get(`/api/blog/`, { params: { id: params.id } })
-    setdata(response.data)
-  }
+  const response = await axios.get("/api/blog", {
+    params: { id: params.id },
+  });
+
+  console.log("Params:", params);
+  console.log("Response:", response.data);
+
+  setdata(response.data);
+};
 
   useEffect(() => {
     fetchblogdata()
