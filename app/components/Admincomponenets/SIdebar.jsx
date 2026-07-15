@@ -1,52 +1,61 @@
-import React from 'react'
+"use client"
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useSession, signOut } from "next-auth/react"
+import Avatar from '../Avatar'
+
+const links = [
+  { href: "/admin/addProduct", label: "Add Blogs", icon: "/add_icon.png" },
+  { href: "/admin/subscription", label: "Add Events", icon: "/add_icon.png" },
+  { href: "/admin/blogList", label: "Blog Lists", icon: "/blog_icon.png" },
+]
+
 const SIdebar = () => {
+  const pathname = usePathname()
+  const { data: session } = useSession()
+
   return (
-    <div>
-      <div className="sidebar w-80 h-[150vh] border border-solid border-gray-300 rounded-xl font-title relative shadow-md max-sm:w-44 max-sm:hidden">
-        <div className="sidebardetails">
-          <div className="sidebarcontent">
-            <div className="bloggerimg px-14 p-2 border border-solid border-black max-sm:h-[53px] max-sm:pl-8 max-sm:p-3">
-              <Link href="/" className='flex items-center gap-1 font-title'>
-                <img src="/icon-trans.png" alt="" className='w-[70px] max-sm:w-24' />
-                <div className='text-lg font-semibold'>
-                  Enigma
-                </div>
-              </Link>
-            </div>
-            <div className="addblogsflex items-center justify-center border border-solid border-black mt-5 p-2 ml-20 pr-10 gap-2 w-[75%] text-md md:shadow-[-7px_7px_0px_#000000] pl-5 max-sm:w-[30%]  max-sm:rounded-full max-sm:p-2">
-              <Link href="/admin/addProduct" className='flex gap-2 max-sm:justify-center'>
-                <img src="/add_icon.png" alt="" className='w-6' />
-                <div className="addblog max-sm:hidden">
-                  Add Blogs
-                </div>
-              </Link>
+    <div className="w-72 min-h-screen bg-[#0d0d14] border-r border-white/5 font-title flex flex-col">
+      <Link href="/" className="flex items-center gap-2 px-6 py-6 border-b border-white/5">
+        <img src="/icon-trans.png" alt="" className="w-10" />
+        <span className="text-white font-semibold">Enigma</span>
+      </Link>
 
-            </div>
-            <div className="subscriptions  flex items-center justify-center border border-solid border-black mt-5 p-2 ml-20 pr-10 gap-2 w-[75%] text-md md:shadow-[-7px_7px_0px_#000000] max-sm:w-[30%]  max-sm:rounded-full max-sm:border-1 max-sm:p-2">
-              <Link href="/admin/subscription" className='flex gap-2'>
-                <img src="/add_icon.png" alt="" className='w-6' />
-                <div className="addblog max-sm:hidden">
-                  Add Events
-                </div>
-              </Link>
+      <div className="flex flex-col gap-1 px-4 mt-6">
+        {links.map((l) => {
+          const active = pathname === l.href
+          return (
+            <Link
+              key={l.href}
+              href={l.href}
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+                active
+                  ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                  : "text-white/60 hover:bg-white/5 hover:text-white"
+              }`}
+            >
+              <img src={l.icon} alt="" className="w-5 opacity-70" />
+              {l.label}
+            </Link>
+          )
+        })}
+      </div>
 
-            </div>
-            <div className="bloglists flex items-center justify-center border border-solid border-black mt-5 p-2 ml-20 pr-10 gap-2 w-[75%] text-md md:shadow-[-7px_7px_0px_#000000] max-sm:w-[30%]  max-sm:rounded-full max-sm:border-1 max-sm:p-2">
-              <Link href='/admin/blogList' className='flex gap-2 '>
-                <img src="/blog_icon.png" alt="" className='w-6' />
-                <div className="addblog max-sm:hidden">
-                  Blog lists
-                </div>
-              </Link>
-
-            </div>
-
+      {session && (
+        <div className="mt-auto p-4 border-t border-white/5 flex items-center gap-3">
+          <Avatar name={session.user.name} sizePx={36} />
+          <div className="flex-1 min-w-0">
+            <div className="text-sm text-white truncate">{session.user.name}</div>
+            <button
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="text-xs text-white/40 hover:text-red-400 transition-colors"
+            >
+              Sign out
+            </button>
           </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
-
 export default SIdebar

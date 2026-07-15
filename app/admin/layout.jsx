@@ -1,97 +1,53 @@
 "use client"
 import SIdebar from "../components/Admincomponenets/SIdebar"
-import { ToastContainer } from 'react-toastify';
-import React, { useState } from 'react';
-import Link from "next/link";
+import Avatar from "../components/Avatar"
+import { ToastContainer } from 'react-toastify'
+import React, { useState } from 'react'
+import { useSession } from "next-auth/react"
+
 export default function Layout({ children }) {
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { data: session } = useSession()
 
-    return (
-        <>
+  return (
+    <div className="flex min-h-screen bg-[#0a0a0f] font-title">
+      <ToastContainer theme="dark" />
 
-            <div className="flex relative font-title">
-                <ToastContainer theme="dark" />
+      <div className="hidden sm:block">
+        <SIdebar />
+      </div>
 
-                {/* Desktop Sidebar */}
-                <div className="hidden sm:block">
-                    <SIdebar />
-                </div>
+      {mobileMenuOpen && (
+        <div
+          className="sm:hidden fixed inset-0 bg-black/60 z-40"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+      <div
+        className={`sm:hidden fixed top-0 left-0 h-full z-50 transition-transform duration-300 ${
+          mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <SIdebar />
+        <button
+          onClick={() => setMobileMenuOpen(false)}
+          className="absolute top-6 right-4 text-white/40 text-xl"
+        >
+          ✕
+        </button>
+      </div>
 
-                {/* Mobile Sidebar */}
-                <div
-                    className={`sm:hidden fixed top-0 left-0 h-full z-50 bg-white shadow-lg transition-transform duration-300 ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-                        }`}
-                >
-                    <SIdebar />
-                </div>
+      <div className="flex flex-col w-full">
+        <div className="flex justify-between items-center h-16 px-6 border-b border-white/5 bg-[#0d0d14]">
+          <button className="sm:hidden text-white/70 text-xl" onClick={() => setMobileMenuOpen(true)}>
+            ☰
+          </button>
+          <div className="text-white font-semibold">Admin Panel</div>
+          {session?.user?.name ? <Avatar name={session.user.name} sizePx={32} /> : <div className="w-8" />}
+        </div>
 
-                <div className="flex flex-col w-full">
-
-                    {/* Top Navbar */}
-                    <div className="flex justify-between items-center max-h-[60px] py-2 w-full border border-black px-6">
-                        <div
-                            className="image2 sm:hidden cursor-pointer"
-                            onClick={() => setMobileMenuOpen(true)}
-                        >
-                            <img src="/menu.png" alt="menu" />
-                        </div>
-
-                        <div className="adminpanel font-semibold">Admin Panel</div>
-                        <img src="/profile_icon.png" alt="profile" className="w-9" />
-                    </div>
-
-                    {/* Children content */}
-                    {children}
-                    {mobileMenuOpen && (
-                        <div className="absolute top-14 ml-1 w-[200px] h-64 bg-gray-200 sm:hidden">
-                            <div className="mt-5">
-                                <div className="addblogs ">
-                                    <div className="w-[180px] active:bg-black">
-                                        <Link href="/">
-                                            <div className="m-3 mr-9 ">
-                                                Home
-                                            </div>
-                                        </Link>
-                                    </div>
-                                </div>
-                                    <div className="w-[180px] active:bg-black">
-                                        <Link href="/admin/addProduct">
-                                            <div className="addblog m-3 mr-9" onClick={() => setMobileMenuOpen(false)}>
-                                                Add Blogs
-                                            </div>
-                                        </Link>
-                                    </div>
-                                <div className="w-[180px] active:bg-black">
-                                    <div className="bloglists ">
-                                        <Link href='/admin/blogList' className=''>
-
-                                            <div className="addblog m-3 mr-8" onClick={() => setMobileMenuOpen(false)}>
-                                                Blog lists
-                                            </div>
-                                        </Link>
-
-                                    </div>
-                                </div>
-                                <div className="w-[180px] active:bg-black">
-                                    <div className="subscriptions">
-                                        <Link href="/admin/subscription" className=''>
-
-                                            <div className="addblog m-3" onClick={() => setMobileMenuOpen(false)}>
-                                                Add Events
-                                            </div>
-                                        </Link>
-
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </div>
-
-            {/* Overlay to close sidebar */}
-
-        </>
-    );
+        <div className="p-6">{children}</div>
+      </div>
+    </div>
+  )
 }

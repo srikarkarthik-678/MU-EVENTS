@@ -1,36 +1,34 @@
 import React from 'react'
 
+const items = [
+  { title: "Events", desc: "We organize hackathons and workshops throughout the year, as well as socials for networking.", hoverClass: "hover:border-emerald-500/40" },
+  { title: "Sub-committees", desc: "Enigma has several subcommittees, for Systems, WebDev, GameDev, AI/ML, Comp Coding and more.", hoverClass: "hover:border-purple-500/40" },
+  { title: "Collaborations", desc: "We partner with other clubs and companies to bring bigger events and opportunities to members.", hoverClass: "hover:border-teal-500/40" },
+  { title: "Prizes", desc: "Hackathons and competitions throughout the year come with prizes, goodies and recognition.", hoverClass: "hover:border-emerald-500/40" },
+]
+
 const We = () => {
   return (
-    <div>
-      <di className="section4 font-title">
-        <div className="section4details" id="whatweare">
-            <div className="wedetails mt-48">
-                <div className='text-center text-3xl font-bold'>What We Do</div>
-                <p className='text-center mt-5'>Here's what to look for when you join Enigma or attend an event</p>
+    <div className="font-title" id="whatweare">
+      <div className="mt-32 px-6 sm:px-24">
+        <div className="text-center text-3xl font-bold text-white">What We Do</div>
+        <p className="text-center mt-3 text-white/50">
+          Here&apos;s what to look for when you join Enigma or attend an event
+        </p>
+
+        <div className="flex items-stretch justify-between gap-5 mt-10 max-lg:flex-col">
+          {items.map((it) => (
+            <div
+              key={it.title}
+              className={`w-full flex flex-col items-center text-center p-6 rounded-2xl bg-[#12121a] border border-white/10 ${it.hoverClass} transition-all`}
+            >
+              <div className="text-lg font-semibold text-white">{it.title}</div>
+              <p className="mt-3 text-sm text-white/50">{it.desc}</p>
             </div>
-            <div className="fourflexboxes flex items-center justify-between gap-5 mt-5 px-10 max-lg:flex max-lg:flex-col max-lg:items-center max-lg:justify-center">
-                <div className="box1 w-[30%] flex flex-col justify-center items-center  p-2 max-lg:w-[80vw]">
-                    <div className='text-center'>Events</div>
-                    <p className='w-[100%] ml-5 mt-3'>We organize hackathons and workshops throughout the year, as well as socials for networking.</p>
-                </div>
-                <div className="box2 w-[30%] flex flex-col justify-center items-center  p-2 max-lg:w-[80vw] ">
-                    <div className='text-center'>Sub-committees</div>
-                    <p className='w-[100%] ml-5 max-lg:ml-10 mt-3 max-lg:w-[100%]'>Enigma has several subcommittees, for SysTems, WebDev, GameDev, AI/ML, Comp Coding and more</p>
-                </div>
-                <div className="box3 w-[30%] flex flex-col justify-center items-center  p-2 max-lg:w-[80vw]">
-                    <div className='text-center'>Collaborations</div>
-                    <p className='w-[100%] ml-5 mt-3'>We organize hackathons and workshops throughout the year, as well as socials for networking.</p>
-                </div>
-                <div className="box4 w-[30%] flex flex-col justify-center items-center  p-2 max-lg:w-[80vw]">
-                    <div className='text-center'>Prizes</div>
-                    <p className='w-[100%] ml-5 mt-3'>We organize hackathons and workshops throughout the year, as well as socials for networking.</p>
-                </div>
-            </div>
+          ))}
         </div>
-      </di>
+      </div>
     </div>
   )
 }
-
 export default We

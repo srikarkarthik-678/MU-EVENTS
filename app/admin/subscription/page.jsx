@@ -1,120 +1,145 @@
 "use client"
 import React, { useState } from 'react'
 import { assets } from '@/public/assets'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import Image from 'next/image'
 import axios from 'axios'
+
 const Page = () => {
-  const [event, setEvent] = useState({
+  const [form, setForm] = useState({
     title: "",
     description: "",
-    category: "Startup",
-    author: "Alex Bennet",
-    authorImg: "/author_img.png"
+    category: "Upcoming",
+    author: "Enigma",
+    authorImg: "/author_img.png",
+    date: ""
   })
-
-  const [img, setImg] = useState(null)
+  const [image, setImage] = useState(null)
+  const [submitting, setSubmitting] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setEvent({ ...event, [name]: value })
+    setForm({ ...form, [name]: value })
   }
 
   const handleFileChange = (e) => {
-    setImg(e.target.files[0])
+    setImage(e.target.files[0])
   }
 
   const onSubmitChange = async (e) => {
     e.preventDefault()
-    const eventdata = new FormData()
-    eventdata.append('title', event.title)
-    eventdata.append('description', event.description)
-    eventdata.append('category', event.category)
-    eventdata.append('author', event.author)
-    eventdata.append('authorImg', event.authorImg)
-    eventdata.append("image", img) // ✅ matched with backend
+    if (!image) {
+      toast.error("Please select a thumbnail image")
+      return
+    }
+
+    setSubmitting(true)
+    const formData = new FormData()
+    formData.append('title', form.title)
+    formData.append('description', form.description)
+    formData.append('category', form.category)
+    formData.append('author', form.author)
+    formData.append('authorImg', form.authorImg)
+    formData.append('date', form.date)
+    formData.append("image", image)
 
     try {
-      const response = await axios.post('/api/email', eventdata)
-
-      console.log(response.data)
+      const response = await axios.post('/api/email', formData)
       if (response.data.success) {
         toast.success(response.data.msg)
-        setEvent({
+        setForm({
           title: "",
           description: "",
-          category: "Startup",
-          author: "Alex Bennet",
-          authorImg: "/author_img.png"
+          category: "Upcoming",
+          author: "Enigma",
+          authorImg: "/author_img.png",
+          date: ""
         })
-        setImg(null)
+        setImage(null)
       } else {
-        toast.error("Blog creation failed")
+        toast.error("Event creation failed")
       }
     } catch (error) {
-      console.error("Error uploading blog:", error)
-      toast.error("Something went wrong. Try again.")
+      toast.error(error.response?.data?.error || "Something went wrong. Try again.")
+    } finally {
+      setSubmitting(false)
     }
   }
 
   return (
-    <div>
-      <div className="addblogs">
-         <div className='m-10 ml-10 text-3xl font-bold'>Add an Event:</div>
-        <form
-          onSubmit={onSubmitChange}
-          className='ml-10 mt-10 max-sm:flex max-sm:flex-col max-sm:items-center max-sm:justify-center max-sm:ml-0'
-        >
-          <div className='font-semibold'>Upload Thumbnail</div>
-          <label htmlFor="image">
+    <div className="max-w-2xl">
+      <div className="text-2xl font-bold text-white mb-8">Add an Event</div>
+
+      <form onSubmit={onSubmitChange} className="flex flex-col gap-6">
+        <div>
+          <div className="text-sm text-white/60 mb-2">Upload Thumbnail</div>
+          <label htmlFor="image" className="inline-block cursor-pointer">
             <Image
-              src={img ? URL.createObjectURL(img) : assets.upload_area}
+              src={image ? URL.createObjectURL(image) : assets.upload_area}
               alt="upload"
-              className='w-36 mt-5'
-              width={50}
-              height={30}
+              className="w-40 h-28 object-cover rounded-xl border border-white/10"
+              width={160}
+              height={112}
             />
           </label>
-
           <input
             type="file"
             id="image"
-            name="image" // ✅ IMPORTANT: add name for FormData
+            name="image"
             hidden
             required
+            accept="image/*"
             onChange={handleFileChange}
           />
+        </div>
 
-          <div className='mt-5'>Event Title</div>
+        <div>
+          <label className="text-sm text-white/60">Event Title</label>
           <input
             type="text"
-            placeholder='Type Here'
-            className='w-[34%] p-2 mt-5 border border-solid max-sm:w-32'
+            placeholder="Type here"
+            className="w-full mt-2 px-4 py-3 rounded-xl bg-[#12121a] border border-white/10 text-white outline-none focus:border-purple-500/50 transition-colors"
             name="title"
-            value={event.title}
+            value={form.title}
             onChange={handleChange}
+            required
           />
+        </div>
 
-          <div className='mt-5'>Event Description</div>
+        <div>
+          <label className="text-sm text-white/60">Event Description</label>
           <textarea
             name="description"
-            placeholder='Write content here'
-            className='w-[34%] h-44 p-2 border border-solid max-sm:w-44'
-            value={event.description}
+            placeholder="Write details here"
+            rows={5}
+            className="w-full mt-2 px-4 py-3 rounded-xl bg-[#12121a] border border-white/10 text-white outline-none focus:border-purple-500/50 transition-colors resize-none"
+            value={form.description}
             onChange={handleChange}
+            required
           />
-          <div>
-            <button
-            type='submit'
-            className='mt-7 px-7 p-2 w-40 bg-black text-white max-sm:px-3 max-sm:w-32'>
-            Add
-          </button>
-          </div>
-        </form>
-        <ToastContainer />
-      </div>
+        </div>
+
+        <div>
+          <label className="text-sm text-white/60">Event Date</label>
+          <input
+            type="date"
+            name="date"
+            className="w-full mt-2 px-4 py-3 rounded-xl bg-[#12121a] border border-white/10 text-white outline-none focus:border-purple-500/50 transition-colors"
+            value={form.date}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={submitting}
+          className="w-fit px-8 py-3 rounded-xl bg-purple-500 text-white font-medium hover:bg-purple-400 transition-all disabled:opacity-50"
+        >
+          {submitting ? "Adding..." : "Add Event"}
+        </button>
+      </form>
     </div>
   )
 }
-
 export default Page
