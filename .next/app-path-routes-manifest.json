@@ -1,0 +1,19 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/admin/addProduct/page": "/admin/addProduct",
+  "/admin/blogList/page": "/admin/blogList",
+  "/admin/page": "/admin",
+  "/admin/subscription/page": "/admin/subscription",
+  "/api/auth/[...nextauth]/route": "/api/auth/[...nextauth]",
+  "/api/auth/signup/route": "/api/auth/signup",
+  "/api/blog/route": "/api/blog",
+  "/api/blogdel/[id]/route": "/api/blogdel/[id]",
+  "/api/email/route": "/api/email",
+  "/api/eventdel/[id]/route": "/api/eventdel/[id]",
+  "/blogpost/[id]/page": "/blogpost/[id]",
+  "/favicon.ico/route": "/favicon.ico",
+  "/page": "/",
+  "/signin/page": "/signin",
+  "/signup/page": "/signup"
+}

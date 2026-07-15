@@ -1,9 +1,19 @@
 {
-  "/api/blog/route": "app/api/blog/route.js",
+  "/_global-error/page": "app/_global-error/page.js",
   "/_not-found/page": "app/_not-found/page.js",
-  "/api/email/route": "app/api/email/route.js",
+  "/admin/addProduct/page": "app/admin/addProduct/page.js",
+  "/admin/blogList/page": "app/admin/blogList/page.js",
+  "/admin/page": "app/admin/page.js",
+  "/admin/subscription/page": "app/admin/subscription/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/auth/signup/route": "app/api/auth/signup/route.js",
+  "/api/blog/route": "app/api/blog/route.js",
+  "/api/blogdel/[id]/route": "app/api/blogdel/[id]/route.js",
+  "/api/email/route": "app/api/email/route.js",
+  "/api/eventdel/[id]/route": "app/api/eventdel/[id]/route.js",
+  "/blogpost/[id]/page": "app/blogpost/[id]/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js",
-  "/signup/page": "app/signup/page.js",
-  "/signin/page": "app/signin/page.js"
+  "/signin/page": "app/signin/page.js",
+  "/signup/page": "app/signup/page.js"
 }

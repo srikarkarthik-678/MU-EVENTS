@@ -1,0 +1,3 @@
+module.exports=[16948,a=>{"use strict";var b=a.i(87924);a.i(72131);let c=["bg-emerald-500","bg-purple-500","bg-teal-500"];a.s(["default",0,({name:a="?",sizePx:d=36})=>{let e=a.split(" ").map(a=>a[0]).join("").slice(0,2).toUpperCase(),f=a.charCodeAt(0)%c.length;return(0,b.jsx)("div",{style:{width:d,height:d},className:`rounded-full flex items-center justify-center text-xs font-semibold text-black shrink-0 ${c[f]}`,children:e})}])}];
+
+//# sourceMappingURL=app_components_Avatar_jsx_1n2f_a6._.js.map
