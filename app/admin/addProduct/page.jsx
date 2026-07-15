@@ -10,7 +10,6 @@ const Page = () => {
     title: "",
     description: "",
     category: "Startup",
-    author: "Alex Bennet",
     authorImg: "/author_img.png"
   })
   const [image, setImage] = useState(null)
@@ -37,7 +36,6 @@ const Page = () => {
     formData.append('title', form.title)
     formData.append('description', form.description)
     formData.append('category', form.category)
-    formData.append('author', form.author)
     formData.append('authorImg', form.authorImg)
     formData.append("image", image)
 

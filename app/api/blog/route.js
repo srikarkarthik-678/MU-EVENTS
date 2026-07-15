@@ -57,7 +57,7 @@ export async function POST(request) {
     title: formData.get('title'),
     description: formData.get('description'),
     category: formData.get('category'),
-    author: formData.get('author'),
+    author: session.user.name,
     image: result.secure_url,
     authorImg: formData.get('authorImg'),
   }
